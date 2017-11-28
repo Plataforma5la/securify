@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Platform, PROVIDER_GOOGLE } from 'react-native';
+import { StyleSheet, Text, View, Platform, PROVIDER_GOOGLE, TextInput } from 'react-native';
 import { MapView, Constants, Location, Permissions } from 'expo';
-import axios from 'axios';
 
-export default class App extends React.Component { 
+import Buscador from '../components/Search.js'
+import Header from '../components/Header.js'
+
+export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -30,17 +32,11 @@ export default class App extends React.Component {
       });
     }
     let location = await Location.getCurrentPositionAsync({});
-    this.setState({ 
-      location: location.coords 
+    this.setState({
+      location: location.coords
     });
   };
 
-  // componentDidMount(){
-  //   axios.get(`https://maps.googleapis.com/maps/api/directions/json?origin=${this.state.location}&destination=teatro-colon&key=AIzaSyDRN_CBAb2xJa1khS_HRlRInQu7WFjELW8`)
-  //   .then()
-  // }
-
-  
   render() {
     console.log("ESTADO", this.state.location)
     const loc= {
@@ -51,25 +47,40 @@ export default class App extends React.Component {
     }
     return (
       (this.state.location) ?
-      <MapView
-       style={{ flex: 1 }}
-       initialRegion={ loc } >
-      <MapView.Marker.Animated
-        provider={PROVIDER_GOOGLE}
-        coordinate={loc}
-        title="Yo"
-      />
-    </MapView>:
-    <Text>Buscando Ubicacion</Text>
+        <View style={styles.container}>
+          {console.log(this.state)}
+          <MapView
+             style={styles.map}
+             region={ loc }
+            >
+            <MapView.Marker.Animated
+              provider={PROVIDER_GOOGLE}
+              coordinate={loc}
+              title="La Maqui"
+            />
+          </MapView>
+          <Buscador/>
+          <Header/>
+        </View>
+    :
+
+    <Text View style={styles.textss}>
+      BUSCANDO...
+    </Text>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  map: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: -999
   },
+  container: {
+    flex: 1
+  },
+  textss: {
+      color: 'black',
+      fontSize: 20,
+  }
 });
