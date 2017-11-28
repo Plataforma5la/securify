@@ -2,14 +2,16 @@ import React from 'react';
 import { StyleSheet, Text, View, Platform, PROVIDER_GOOGLE, TextInput } from 'react-native';
 import { MapView, Constants, Location, Permissions } from 'expo';
 
-import Buscador from '../components/Search.js'
-import Header from '../components/Header.js'
+import Trazo from '../containers/TrazoContainer';
 
-export default class App extends React.Component {
+export default class MapContainer extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      location: null,
+      location: {
+        latitude:null,
+        longitude:null,
+      },
       errMessage: null,
     };
   }
@@ -46,9 +48,7 @@ export default class App extends React.Component {
       longitudeDelta: 0.0121,
     }
     return (
-      (this.state.location) ?
-        <View style={styles.container}>
-          {console.log(this.state)}
+      (this.state.location.latitude) ?
           <MapView
              style={styles.map}
              region={ loc }
@@ -56,15 +56,13 @@ export default class App extends React.Component {
             <MapView.Marker.Animated
               provider={PROVIDER_GOOGLE}
               coordinate={loc}
-              title="La Maqui"
+              title="Mi pisición"
             />
+            <Trazo location={loc} />
           </MapView>
-          <Buscador/>
-          <Header/>
-        </View>
+        
     :
-
-    <Text View style={styles.textss}>
+    <Text style={styles.textss}>
       BUSCANDO...
     </Text>
     );
@@ -75,9 +73,6 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
     zIndex: -999
-  },
-  container: {
-    flex: 1
   },
   textss: {
       color: 'black',
