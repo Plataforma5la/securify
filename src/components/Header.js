@@ -14,7 +14,23 @@ function Header(props){
     <ScrollView style={styles.barra}>
       <TouchableWithoutFeedback>
         <Icon
-          style={{alignSelf: 'flex-end', marginRight: 20}}
+          style={styles.contactos}
+          name='gear'
+          color='white'
+          size={25}
+        />
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback>
+        <Icon
+          style={styles.home}
+          name='home'
+          color='white'
+          size={25}
+        />
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback>
+        <Icon
+          style={styles.logo}
           name='bars'
           color='white'
           size={25}
@@ -26,14 +42,27 @@ function Header(props){
 
 const styles = StyleSheet.create({
   barra: {
-    paddingLeft: 10,
-    paddingTop: 15,
-    position: 'absolute',
+    paddingTop: 10,
     bottom: 0,
     width: '100%',
-    height: 50,
-    backgroundColor: '#272D27',
+    height: 45,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    position: 'absolute',
   },
+  contactos: {
+    alignSelf: 'flex-end',
+    marginRight: 15,
+    position: 'relative',
+ },
+ logo: {
+   alignSelf: 'flex-start',
+   position: 'absolute',
+   marginLeft: 15,
+ },
+ home: {
+   alignSelf: 'center',
+   position: 'absolute',
+ }
 });
 
 export default Header;

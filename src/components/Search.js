@@ -3,8 +3,11 @@ import {
   Text,
   View,
   StyleSheet,
-  TextInput
+  TextInput,
+  TouchableWithoutFeedback,
 } from 'react-native';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class Buscador extends React.Component{
   constructor(props){
@@ -16,12 +19,14 @@ export default class Buscador extends React.Component{
 
   render(){
     return(
-      <TextInput
-        onChange={({text}) =>this.setState({ text })}
-        value={this.state.text}
-        style={styles.input}
-        placeholder="Where to?"
-      />
+      <View>
+        <TextInput
+          onChange={({text}) =>this.setState({ text })}
+          value={this.state.text}
+          style={styles.input}
+          placeholder="Where to?"
+        />
+      </View>
     );
   }
 }
@@ -37,4 +42,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 5,
   },
+  logo: {
+    width: 120,
+    height: 40,
+  }
 });

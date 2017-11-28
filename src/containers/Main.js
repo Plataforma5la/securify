@@ -2,8 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View, Platform, PROVIDER_GOOGLE, TextInput } from 'react-native';
 import { MapView, Constants, Location, Permissions } from 'expo';
 
+import SideMenu from 'react-native-side-menu'
+
+// components
 import Buscador from '../components/Search.js'
 import Header from '../components/Header.js'
+import MenuStakeHolders from '../components/MenuStakeHolders.js'
+
 
 export default class App extends React.Component {
   constructor(props){
@@ -11,8 +16,19 @@ export default class App extends React.Component {
     this.state = {
       location: null,
       errMessage: null,
+      isOpen: false,
     };
   }
+
+  toggle(){
+    this.setState({
+      isOpen: !this.state.isOpen,
+    })
+  };
+
+  updateMenu(isOpen){
+    this.setState({isOpen})
+  };
 
   componentWillMount(){
     if(Platform.OS === "android" && !Constants.isDevice){
@@ -48,11 +64,10 @@ export default class App extends React.Component {
     return (
       (this.state.location) ?
         <View style={styles.container}>
-          {console.log(this.state)}
           <MapView
-             style={styles.map}
-             region={ loc }
-            >
+            style={styles.map}
+            region={ loc }
+          >
             <MapView.Marker.Animated
               provider={PROVIDER_GOOGLE}
               coordinate={loc}
