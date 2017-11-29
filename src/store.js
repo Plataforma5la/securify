@@ -8,13 +8,10 @@ import rootReducer from './redux/reducers/index.js';
 const loggerMiddleware = createLogger({predicate: (getState, action)=> __DEV__});
 
 function configureStore(){
-  const enchancer = compose(
-    applyMiddleware(
-      thunkMiddleware,
-      loggerMiddleware,
-    ),
-  );
-  return createStore(rootReducer, enchancer);
+  return createStore(rootReducer, applyMiddleware(
+    thunkMiddleware,
+    loggerMiddleware,
+  ));
 };
 
 const store = configureStore()

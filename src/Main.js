@@ -4,27 +4,27 @@ import { Provider } from 'react-redux';
 
 import store from './store.js'
 
-import Mapa from './containers/MapContainer';
+import MapContainer from './containers/MapContainer';
 import Header from './components/Header';
 import Search from './components/Search';
 
 export default class Main extends React.Component{
-    render(){
-        return(
-            <Provider store= {store}>
-                <View style={styles.container}>
-                    <Mapa />
-                    <Header />
-                    <Search />    
-                </View>
-            </Provider>
-        )
-    }
+  render(){
+    return(
+      <Provider store= {store}>
+        <View style={styles.container}>
+          <MapContainer />
+          <Header />
+          <Search />    
+        </View>
+      </Provider>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1
-    },
-  });
+  container: {
+    flex: 1
+  },
+});
   

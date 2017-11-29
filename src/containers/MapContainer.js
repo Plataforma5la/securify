@@ -1,66 +1,39 @@
 import React from 'react';
 import { StyleSheet, Text, View, Platform, PROVIDER_GOOGLE, TextInput } from 'react-native';
 import { MapView, Constants, Location, Permissions } from 'expo';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actionCreators from '../redux/actions/actionCreators';
 
 import Trazo from '../containers/TrazoContainer';
 
-export default class MapContainer extends React.Component {
-  constructor(props){
+class MapContainer extends React.Component {
+ constructor(props){
     super(props);
-    this.state = {
-      location: {
-        latitude:null,
-        longitude:null,
-      },
-      errMessage: null,
-    };
   }
 
-  componentWillMount(){
+  componentDidMount(){
     if(Platform.OS === "android" && !Constants.isDevice){
-      this.setState({
-        errMessage: "Error",
-      });
+      this.props.errMessage();      
     } else {
-      this._getLocationAsync();
+      this.props.getLocationAsync();
     }
-  };
-
-  _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if(status !== "granted"){
-      this.setState({
-        errMessage: "Permiso denegado"
-      });
-    }
-    let location = await Location.getCurrentPositionAsync({});
-    this.setState({
-      location: location.coords
-    });
   };
 
   render() {
-    console.log("ESTADO", this.state.location)
-    const loc= {
-      latitude: this.state.location && this.state.location.latitude,
-      longitude: this.state.location && this.state.location.longitude,
-      latitudeDelta: 0.0142,
-      longitudeDelta: 0.0121,
-    }
     return (
-      (this.state.location.latitude) ?
-          <MapView
-            style={styles.map}
-            region={ loc }
-          >
-            <MapView.Marker.Animated
-              provider={PROVIDER_GOOGLE}
-              coordinate={loc}
-              title="Mi pisición"
-            />
-            <Trazo location={loc} />
-          </MapView>
-        
+      (this.props.location.latitude) ?
+      <MapView
+        style={styles.map}
+        region={ this.props.location }
+      >
+        <MapView.Marker.Animated
+          provider={PROVIDER_GOOGLE}
+          coordinate={ this.props.location }
+          title="Mi pisición"
+        />
+        <Trazo location={ this.props.location } />
+      </MapView>
     :
     <Text style={styles.textss}>
       BUSCANDO...
@@ -69,13 +42,24 @@ export default class MapContainer extends React.Component {
   }
 }
 
+function mapStateToProps(state){  
+  return {location: state.ubicacionActual}
+};
+
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(actionCreators, dispatch)
+}
+
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
     zIndex: -999
   },
   textss: {
-      color: 'black',
-      fontSize: 20,
+    color: 'black',
+    fontSize: 20,
+    position: 'relative'
   }
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
