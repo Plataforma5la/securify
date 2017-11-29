@@ -13,24 +13,13 @@ export default class MapContainer extends React.Component {
         longitude:null,
       },
       errMessage: null,
-      isOpen: false,
     };
   }
-
-  toggle(){
-    this.setState({
-      isOpen: !this.state.isOpen,
-    })
-  };
-
-  updateMenu(isOpen){
-    this.setState({isOpen})
-  };
 
   componentWillMount(){
     if(Platform.OS === "android" && !Constants.isDevice){
       this.setState({
-        errMessage: "Esto es un error que no diste permiso la re puta que te pario",
+        errMessage: "Error",
       });
     } else {
       this._getLocationAsync();
@@ -41,7 +30,7 @@ export default class MapContainer extends React.Component {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if(status !== "granted"){
       this.setState({
-        errMessage: "Permiso denegado pollo"
+        errMessage: "Permiso denegado"
       });
     }
     let location = await Location.getCurrentPositionAsync({});
