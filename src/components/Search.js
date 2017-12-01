@@ -4,7 +4,7 @@ import {
   View,
   StyleSheet,
   TextInput,
-  TouchableWithoutFeedback,
+  ScrollView,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,31 +19,46 @@ export default class Buscador extends React.Component{
 
   render(){
     return(
-      <View>
+      <View style={styles.barra}>
         <TextInput
           onChange={({text}) =>this.setState({ text })}
           value={this.state.text}
           style={styles.input}
           placeholder="Where to?"
         />
+        <Icon
+          style={styles.logo}
+          name='search'
+          color='white'
+          size={25}
+        />
       </View>
     );
   }
 }
 
+
 const styles = StyleSheet.create({
+  barra: {
+    width: '100%',
+    paddingTop: 28,
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: 'black'
+  },
   input: {
-    paddingLeft: 10,
-    margin: 20,
-    marginTop: 80,
     height: 40,
-    borderColor: 'black',
+    width: '80%',
     borderWidth: 0.5,
-    backgroundColor: 'white',
-    borderRadius: 5,
+    backgroundColor: 'black',
+    color: 'white',
+    marginLeft: 20,
   },
   logo: {
-    width: 120,
-    height: 40,
+    alignSelf: 'center',
+    marginRight: 15,
+    marginLeft: 5,
+    position: 'relative',
+    zIndex: 10
   }
 });

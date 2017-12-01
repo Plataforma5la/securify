@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
 
+// Funcion ubicacion actual
 export function ubicacionActual(location){
   return{
     type: 'UBI_ACTUAL',
@@ -8,13 +9,15 @@ export function ubicacionActual(location){
   }
 };
 
+// Funcion error mensaje
 export function errMessage(error){
   return{
     type: 'ERROR_PERMISO',
     error,
   }
-}
+};
 
+// Buscar ubicacion
 export function getLocationAsync() {
   return async (dispatch) => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -24,4 +27,32 @@ export function getLocationAsync() {
     let location = await Location.getCurrentPositionAsync({});
     return dispatch(ubicacionActual(location))
     }
-}
+};
+
+// Funcion contactos
+export function contactosFn(contactos){
+  return{
+    type: 'REC_CONTACTOS',
+    contactos,
+  }
+};
+
+// Contactos celular
+export function showFirstContactAsync(){
+  return async (dispatch) => {
+    const permission = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
+    if (permission.status !== 'granted') {
+      return dispatch(errMessage('error permisos contactos'))      
+    }
+    const contacts = await Expo.Contacts.getContactsAsync({
+      fields: [
+        Expo.Contacts.PHONE_NUMBERS,
+      ],
+      pageSize: 500,
+      pageOffset: 0,
+    });
+    if (contacts.total > 0) {
+      return dispatch(contactosFn(contacts))
+    }
+  }
+};
