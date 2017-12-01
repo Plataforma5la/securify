@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
+import { uniqBy } from 'lodash';
 
 // Funcion ubicacion actual
 export function ubicacionActual(location){
@@ -44,14 +45,15 @@ export function showFirstContactAsync(){
     if (permission.status !== 'granted') {
       return dispatch(errMessage('error permisos contactos'))      
     }
-    const contacts = await Expo.Contacts.getContactsAsync({
+    const contactsResponse = await Expo.Contacts.getContactsAsync({
       fields: [
         Expo.Contacts.PHONE_NUMBERS,
       ],
       pageSize: 500,
       pageOffset: 0,
     });
-    if (contacts.total > 0) {
+    const contacts = uniqBy(contactsResponse.data, 'id');
+    if (contacts.length > 0) {
       return dispatch(contactosFn(contacts))
     }
   }

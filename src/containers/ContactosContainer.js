@@ -6,11 +6,13 @@ import * as actionCreators from '../redux/actions/actionCreators';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import MenuStakeHolders from '../components/MenuStakeHolders'
 
 class ContactosContainer extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      text: '',
     };
   }
 
@@ -20,7 +22,6 @@ class ContactosContainer extends React.Component {
 
   render() {
     console.log('Contactos', this.props.contactos);    
-    console.log('Mensaje', this.state.mensaje);
     return (
       <View style={styles.content}>
         <View style={styles.header}>
@@ -40,6 +41,13 @@ class ContactosContainer extends React.Component {
             size={25}
           />
       </View>
+      { (this.props.contactos.length) ?
+        <MenuStakeHolders
+          contactos= {this.props.contactos}
+        />
+        :
+        null
+      }
      </View>
     );
   }
