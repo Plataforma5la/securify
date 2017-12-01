@@ -38,7 +38,7 @@ export  function getDirections(startLoc, destinationLoc) {
   return async (dispatch)=> {
     try {
     if (destinationLoc){
-    let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${destinationLoc}&region=ar&key= AIzaSyCMON2_6RV1GtJanT-wfFU2Ps0pCSV7Mcc`)
+    let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${destinationLoc}&mode=walking&region=ar&key= AIzaSyCMON2_6RV1GtJanT-wfFU2Ps0pCSV7Mcc`)
     let respJson = await resp.json();
     let points = Polyline.decode(respJson.routes[0].overview_polyline.points);
     let coords = points.map((point, index) => {
