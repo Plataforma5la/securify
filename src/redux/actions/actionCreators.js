@@ -58,3 +58,21 @@ export function showFirstContactAsync(){
     }
   }
 };
+
+// Agregar contactos lista
+
+export function agregarLista(id){
+  return {
+    type: 'AGREGAR_CONT',
+    id,
+  }
+};
+
+// Borrar contacto lista
+
+export function borrarLista(index){
+  return {
+    type: 'REMOVE_CONT',
+    index,
+  }
+};

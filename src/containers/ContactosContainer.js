@@ -21,7 +21,7 @@ class ContactosContainer extends React.Component {
   }
 
   render() {
-    console.log('Contactos', this.props.contactos);    
+    // console.log('Contactos', this.props.contactos);    
     return (
       <View style={styles.content}>
         <View style={styles.header}>
