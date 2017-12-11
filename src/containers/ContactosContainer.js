@@ -14,14 +14,20 @@ class ContactosContainer extends React.Component {
     this.state = {
       text: '',
     };
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentWillMount(){
     this.props.showFirstContactAsync();    
+  };
+
+  handleChange(e){
+    this.setState({
+      text: e,
+    })
   }
 
   render() {
-    // console.log('Contactos', this.props.contactos);    
     return (
       <View style={styles.content}>
         <View style={styles.header}>
@@ -29,7 +35,7 @@ class ContactosContainer extends React.Component {
         </View>
         <View style={styles.barra}>
           <TextInput
-            onChange={({text}) =>this.setState({ text })}
+            onChangeText={this.handleChange}
             value={this.state.text}
             style={styles.input}
             placeholder="A quien buscas?"
@@ -44,6 +50,7 @@ class ContactosContainer extends React.Component {
       { (this.props.contactos.length) ?
         <MenuStakeHolders
           contactos= {this.props.contactos}
+          filtrar= {this.state.text}
         />
         :
         null

@@ -9,6 +9,8 @@ import ContactosContainer from './containers/ContactosContainer';
 
 import Header from './components/Header';
 import Search from './components/Search';
+import SendSMS from './components/SendSMS';
+
 
 export default class Main extends React.Component{
   render(){
