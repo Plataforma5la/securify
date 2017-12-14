@@ -4,6 +4,7 @@ import { MapView, Constants, Location, Permissions } from 'expo';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../redux/actions/actionCreators';
+import MapViewComponent from '../components/Maps'
 
 import Trazo from '../containers/TrazoContainer';
 
@@ -12,27 +13,25 @@ class MapContainer extends React.Component {
     super(props);
   }
 
-  componentDidMount(){
-    if(Platform.OS === "android" && !Constants.isDevice){
-      this.props.errMessage();      
-    } else {
-      this.props.getLocationAsync();
-    }
-  };
+  // componentDidMount(){
+  //   if(Platform.OS === "android" && !Constants.isDevice){
+  //     this.props.errMessage();      
+  //   } else {
+  //     this.props.getLocationAsync();
+  //   }
+  // };
 
   render() {
     return (
       (this.props.location.latitude) ?
       <MapView
         style={styles.map}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
         region={ this.props.location }
       >
-        <MapView.Marker.Animated
-          provider={PROVIDER_GOOGLE}
-          coordinate={ this.props.location }
-          title="Mi pisición"
-        />
-        <Trazo location={ this.props.location } />
+      {/* <MapViewComponent/> */}
+      <Trazo location={ this.props.location } />
       </MapView>
     :
     <Text style={styles.textss}>
@@ -53,8 +52,8 @@ function mapDispatchToProps(dispatch){
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
-    zIndex: -999
-  },
+    zIndex: -999,
+    },
   textss: {
     color: 'black',
     fontSize: 20,

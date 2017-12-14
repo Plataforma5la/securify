@@ -54,12 +54,12 @@ const styles = StyleSheet.create({
     marginRight: 15,
     position: 'relative',
  },
- logo: {
+  logo: {
    alignSelf: 'flex-start',
    position: 'absolute',
    marginLeft: 15,
  },
- home: {
+  home: {
    alignSelf: 'center',
    position: 'absolute',
  }

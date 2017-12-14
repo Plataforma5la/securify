@@ -1,30 +1,48 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {getDirections} from '../redux/actions/actionCreators';
+
 import {
   Text,
   View,
   StyleSheet,
   TextInput,
   ScrollView,
+  TouchableWithoutFeedback,
+  Alert
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class Buscador extends React.Component{
+class Buscador extends React.Component{
   constructor(props){
     super(props);
     this.state = {
       text: '',
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleSubmit(){
+      this.props.getDirections(`${this.props.location.latitude},${this.props.location.longitude}`,this.state.text);
+  }
+
+  handleChange(e){
+    this.setState({
+      text:e,
+    })
   }
 
   render(){
     return(
       <View style={styles.barra}>
         <TextInput
-          onChange={({text}) =>this.setState({ text })}
+          onSubmitEditing={this.handleSubmit}
+          onChangeText={this.handleChange}
           value={this.state.text}
           style={styles.input}
-          placeholder="Where to?"
+          placeholder="A donde desea ir?"
         />
         <Icon
           style={styles.logo}
@@ -62,3 +80,15 @@ const styles = StyleSheet.create({
     zIndex: 10
   }
 });
+
+function mapStateToProps(state){
+  return {location: state.ubicacionActual}
+}
+
+function mapDispatchToProps(dispatch){
+  return {
+    getDirections: (star,end) => dispatch(getDirections(star,end))
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Buscador)
