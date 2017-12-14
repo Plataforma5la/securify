@@ -25,7 +25,6 @@ export default class TrazoContainer extends React.Component {
     try {
       let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${ startLoc }&destination=${ destinationLoc }&region=ar`)
       let respJson = await resp.json();
-      console.log(respJson);
       let points = Polyline.decode(respJson.routes[0].overview_polyline.points);
       let coords = points.map((point, index) => {
           return  {

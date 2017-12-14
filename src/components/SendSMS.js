@@ -1,68 +1,45 @@
-import React, { Component } from 'react';
+import React from 'react';
+
 import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
-  Button
+  TouchableOpacity
 } from 'react-native';
-import Modal from 'react-native-modal'
 
-export default class SendSMS extends Component {
-  constructor(props) {
-   super(props);
-   this.state = {
-     isModalVisible: false
-   }
-  }
-  _showModal = () => this.setState({ isModalVisible: true })
+import Communications from 'react-native-communications';
 
-  _hideModal = () => this.setState({ isModalVisible: false })
-
-  render () {
+export default class SendSMS extends React.Component{
+  
+  render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this._showModal}>
-          <Text>Show Modal</Text>
-        </TouchableOpacity>
-        <Modal  isVisible={this.state.isModalVisible}>
-          <View style={styles.modalContainer}>
-            <Text>Hello!</Text>
-              <Button
-              title="Hide Modal"
-              color="#841584"
-              onPress={this._hideModal} />
-          </View>
-        </Modal>
-      </View>
-    )
-  }
-}
 
-const styles = StyleSheet.create({
+        <TouchableOpacity onPress={() => Communications.text('1130626601', 'concentrate!')}>
+          <View style={styles.holder}>
+            <Text style={styles.text}>Send a SMS to the cat Guille</Text>
+          </View>
+        </TouchableOpacity>
+
+      </View>
+    );
+  }
+};
+
+var styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    justifyContent: 'center',    
+    backgroundColor: 'rgb(253,253,253)',
   },
-  modalContainer: {
-    alignSelf: "center",
+  holder: {
+    flex: 0.25,
     justifyContent: 'center',
-    alignItems: 'center',
-    height: 100,
-    width: 200,
-    backgroundColor: '#F5FCFF',
+    
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  text: {
+    fontSize: 32,
   },
 });

@@ -1,7 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View, Platform } from 'react-native';
-import { MapView, Constants, Location, Permissions } from 'expo';
+import { Provider } from 'react-redux';
 
-import App from './src/Main';
+import store from './src/store.js'
+
+import Main from './src/Main';
+
+function App(){
+	return(
+		<Provider store= {store}>
+			<Main />
+		</Provider>
+	)
+}
 
 export default App;

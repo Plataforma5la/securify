@@ -7,6 +7,8 @@
     "lodash": "^4.17.4",
     "react": "16.0.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-23.0.0.tar.gz",
+    "react-native-communications": "^2.2.1",
+    "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-modal": "^4.1.1",
     "react-native-vector-icons": "^4.4.2",
     "react-redux": "^5.0.6",

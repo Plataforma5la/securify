@@ -17,10 +17,6 @@ class ContactosContainer extends React.Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentWillMount(){
-    this.props.showFirstContactAsync();    
-  };
-
   handleChange(e){
     this.setState({
       text: e,

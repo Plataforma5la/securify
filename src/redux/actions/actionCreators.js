@@ -49,7 +49,7 @@ export function showFirstContactAsync(){
       fields: [
         Expo.Contacts.PHONE_NUMBERS,
       ],
-      pageSize: 500,
+      pageSize: 300,
       pageOffset: 0,
     });
     const contacts = uniqBy(contactsResponse.data, 'id');

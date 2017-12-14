@@ -27,23 +27,24 @@ class MenuStakeHolders extends React.Component{
     this.filtrarLetras = this.filtrarLetras.bind(this)
   };
 
-  handleClick(contacts){
-    if(this.props.contactosLista.includes(contacts.id)) {
-      const index = this.props.contactosLista.findIndex(agregado => agregado === contacts.id)
+  handleClick(contact){
+    if(this.props.contactosLista.includes(contact.id)) {
+      const index = this.props.contactosLista.findIndex(agregado => agregado === contact.id)
       this.props.borrarLista(index)
     } else{
-      this.props.agregarLista(contacts.id)
+      this._showModal(contact)
     }
   };
 
   numberClick(contacto, num){
     this.setState({
-      numSelect: {
-        ...this.state.numSelect,
-        [contacto.id]: num.number
-      },
+      // numSelect: {
+      //   ...this.state.numSelect,
+      //   [contacto.id]: num.number
+      // },
       isModalVisible: false
     })
+    this.props.agregarLista(contacto.id);
   }
 
   filtrarLetras(valor, contacto){
@@ -60,33 +61,33 @@ class MenuStakeHolders extends React.Component{
   _hideModal = () => this.setState({ isModalVisible: false });
     
   render(){
-    console.log('CONTACTOS', this.props.contactos)
     return(
       <ScrollView>
-
-    {this.props.contactos
-      .filter((contacto) => this.filtrarLetras(this.props.filtrar.length, contacto))
-      .sort((a,b) => {
-        if(a.name > b.name) return 1
-        else return -1
-    })
+      {this.props.contactos
+        .filter((contacto) => this.filtrarLetras(this.props.filtrar.length, contacto))
+        .sort((a,b) => {
+          if(a.name > b.name) return 1
+          else return -1
+      })
       .map((contact)=>{
 
         return (
 
-          <TouchableOpacity onPress={()=> this._showModal(contact)} key={contact.id}  >
-            <View style={styles.container}>  
+          <TouchableOpacity onPress={()=> this.handleClick(contact)} key={contact.id} style={styles.container}  >
               <View style={styles.divText}>
                 <Text style={styles.textName}> {contact.name}</Text>
                 
                 <Modal isVisible={this.state.selectContact === contact.id && this.state.isModalVisible}>
+                  <View style={styles.divPart}>
+                    <Text style={styles.textModal}>Seleciona un numero de {contact.firstName}</Text>
+                  </View>
                   {
                   (contact.phoneNumbers) ?
                   contact.phoneNumbers.map(num=>{
                     return(
                       <View style={styles.modalContainer} key={num.id} >
                         <TouchableOpacity onPress={()=> this.numberClick(contact, num)} >
-                          <Text style={styles.textNumber} > {num.number} </Text>
+                          <Text style={styles.textNumberModal} > {num.number} </Text>
                         </TouchableOpacity>
                       </View>
                     )
@@ -97,13 +98,12 @@ class MenuStakeHolders extends React.Component{
 
                 <Button
                   title="Cancelar"
-                  color="#841584"
-                  onPress={this._hideModal} 
+                  onPress={this._hideModal}
                 />
                 </Modal>
 
-                {   
-                 (this.state.numSelect[contact.id]) ?
+                {
+                 (this.props.contactosLista.includes(contact.id)) ?
                     <Text style={styles.textNumber} > {this.state.numSelect[contact.id]}</Text>
                     :
                     null
@@ -113,21 +113,18 @@ class MenuStakeHolders extends React.Component{
 
               {
 
-                (this.state.numSelect[contact.id]) ?
+                (this.props.contactosLista.includes(contact.id)) ?
                   <View>
                     <View style={styles.div}/>
                   </View>            
                   :
                   null
               }
-
-            </View>
           </TouchableOpacity>
 
         )
         }
       )}
-
       </ScrollView>
 
     )
@@ -152,8 +149,7 @@ const styles = StyleSheet.create({
     borderColor: '#d6d7da',
     flexDirection: 'row',
     display: 'flex',
-    justifyContent: 'space-between',    
-
+    justifyContent: 'space-between',
   },
   textName: {
     color: 'black',
@@ -164,6 +160,11 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 12,
     paddingLeft: 30, 
+  },
+  textNumberModal: {
+    color: 'black',
+    fontSize: 20,
+    paddingLeft: 20,   
   },
   div: {
     width: 20,
@@ -176,13 +177,29 @@ const styles = StyleSheet.create({
     flexDirection: 'column',    
   },
   modalContainer: {
-    alignSelf: "center",
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 100,
-    width: 200,
-    backgroundColor: '#F5FCFF',
+    display: 'flex',
+    justifyContent: 'center',        
+    height: 60,
+    width: '100%',
+    backgroundColor: 'white',
+    borderWidth: 0.8,
+    borderColor: 'black',
   },
+  divPart: {
+    display: 'flex',
+    justifyContent: 'center',        
+    height: 60,
+    width: '100%',
+    backgroundColor: '#ECF0F1',
+    borderWidth: 0.8,
+    borderColor: 'black',
+  },
+  textModal: {
+    color: 'black',
+    fontSize: 20,
+    paddingLeft: 20,
+    fontWeight: 'bold',    
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuStakeHolders);
