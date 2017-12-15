@@ -24,9 +24,7 @@ export default class Loadder extends React.Component{
     return (
       <View style={{ flex: 1 }}>
         <Image
-          style={{
-            flex: 1,
-          }}
+          style={{ flex: 1 }}
           source={{ uri: remote }} />
           <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: 'white'}} />
       </View>

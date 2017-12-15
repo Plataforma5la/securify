@@ -6,63 +6,53 @@ import {
   TouchableWithoutFeedback,
   ScrollView
 } from 'react-native';
+import { NativeRouter, Route, Link } from 'react-router-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 function Header(props){
   return(
-    <ScrollView style={styles.barra}>
-      <TouchableWithoutFeedback>
+    <View style={styles.barra}>
+      <Link to="/contacts">
+          <Icon
+            style={styles.logo}
+            name='bars'
+            color='white'
+            size={25}
+          />
+      </Link>
+      <Link to={`/`}>
+          <Icon
+            style={styles.home}
+            name='home'
+            color='white'
+            size={25}
+          />
+      </Link>
+      <Link>
         <Icon
           style={styles.contactos}
           name='gear'
           color='white'
           size={25}
         />
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback>
-        <Icon
-          style={styles.home}
-          name='home'
-          color='white'
-          size={25}
-        />
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback>
-        <Icon
-          style={styles.logo}
-          name='bars'
-          color='white'
-          size={25}
-        />
-      </TouchableWithoutFeedback>
-    </ScrollView>
+      </Link>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   barra: {
-    paddingTop: 10,
     bottom: 0,
     width: '100%',
     height: 45,
     backgroundColor: 'rgba(0, 0, 0, 0.45)',
     position: 'absolute',
+    zIndex: 999,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
-  contactos: {
-    alignSelf: 'flex-end',
-    marginRight: 15,
-    position: 'relative',
- },
-  logo: {
-   alignSelf: 'flex-start',
-   position: 'absolute',
-   marginLeft: 15,
- },
-  home: {
-   alignSelf: 'center',
-   position: 'absolute',
- }
 });
 
 export default Header;

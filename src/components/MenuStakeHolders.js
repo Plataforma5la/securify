@@ -3,10 +3,10 @@ import {
   StyleSheet,
   View,
   Text,
-  ScrollView,
   TouchableHighlight,
   TouchableOpacity,
   Button,
+  FlatList,
 } from 'react-native';
 
 import Modal from 'react-native-modal';
@@ -22,26 +22,74 @@ class MenuStakeHolders extends React.Component{
     this.state= {
       isModalVisible: false,
       selectContact: '',
-      numSelect: {},
-    };
-    this.filtrarLetras = this.filtrarLetras.bind(this)
+			numSelect: {},
+		};
+		this.filtrarLetras = this.filtrarLetras.bind(this)
+		this.renderRow = this.renderRow.bind(this);
   };
 
   handleClick(contact){
-    if(this.props.contactosLista.includes(contact.id)) {
-      const index = this.props.contactosLista.findIndex(agregado => agregado === contact.id)
+    const index = this.props.contactosLista.indexOf(contact.id)
+    if(index > -1) {
       this.props.borrarLista(index)
     } else{
       this._showModal(contact)
     }
   };
 
+  renderRow({ item: contact }) {
+    return (  
+      <TouchableOpacity onPress={()=> this.handleClick(contact)} key={contact.id} style={styles.container}  >
+        <View style={styles.divText}>
+        <Text style={styles.textName}> {contact.name}</Text>
+        
+        <Modal isVisible={this.state.selectContact === contact.id && this.state.isModalVisible}>
+          <View style={styles.divPart}>
+          <Text style={styles.textModal}>Seleciona un numero de {contact.firstName}</Text>
+          </View>
+          {
+          (contact.phoneNumbers) ?
+          contact.phoneNumbers.map(num=>{
+          return(
+            <View style={styles.modalContainer} key={num.id} >
+            <TouchableOpacity onPress={()=> this.numberClick(contact, num)} >
+                <Text style={styles.textNumberModal} > {num.number} </Text>
+            </TouchableOpacity>
+            </View>
+          )
+          })
+          :
+          <Text style={styles.textNumber}> No hay numero registrado </Text>                  
+          }
+
+        <Button
+          title="Cancelar"
+          onPress={this._hideModal}
+        />
+        </Modal>
+
+        {
+          (this.props.contactosLista.includes(contact.id)) ?
+          <Text style={styles.textNumber} > {this.state.numSelect[contact.id]}</Text>
+          :
+          null
+        }       
+        
+        </View>
+        {
+        (this.props.contactosLista.includes(contact.id)) ?
+          <View>
+          <View style={styles.div}/>
+          </View>            
+          :
+          null
+        }
+      </TouchableOpacity>
+    )
+  }
+
   numberClick(contacto, num){
     this.setState({
-      // numSelect: {
-      //   ...this.state.numSelect,
-      //   [contacto.id]: num.number
-      // },
       isModalVisible: false
     })
     this.props.agregarLista(contacto.id);
@@ -62,71 +110,16 @@ class MenuStakeHolders extends React.Component{
     
   render(){
     return(
-      <ScrollView>
-      {this.props.contactos
-        .filter((contacto) => this.filtrarLetras(this.props.filtrar.length, contacto))
-        .sort((a,b) => {
-          if(a.name > b.name) return 1
-          else return -1
-      })
-      .map((contact)=>{
-
-        return (
-
-          <TouchableOpacity onPress={()=> this.handleClick(contact)} key={contact.id} style={styles.container}  >
-              <View style={styles.divText}>
-                <Text style={styles.textName}> {contact.name}</Text>
-                
-                <Modal isVisible={this.state.selectContact === contact.id && this.state.isModalVisible}>
-                  <View style={styles.divPart}>
-                    <Text style={styles.textModal}>Seleciona un numero de {contact.firstName}</Text>
-                  </View>
-                  {
-                  (contact.phoneNumbers) ?
-                  contact.phoneNumbers.map(num=>{
-                    return(
-                      <View style={styles.modalContainer} key={num.id} >
-                        <TouchableOpacity onPress={()=> this.numberClick(contact, num)} >
-                          <Text style={styles.textNumberModal} > {num.number} </Text>
-                        </TouchableOpacity>
-                      </View>
-                    )
-                  })
-                  :
-                  <Text style={styles.textNumber}> No hay numero registrado </Text>                  
-                  }
-
-                <Button
-                  title="Cancelar"
-                  onPress={this._hideModal}
-                />
-                </Modal>
-
-                {
-                 (this.props.contactosLista.includes(contact.id)) ?
-                    <Text style={styles.textNumber} > {this.state.numSelect[contact.id]}</Text>
-                    :
-                    null
-                }       
-
-                </View>
-
-              {
-
-                (this.props.contactosLista.includes(contact.id)) ?
-                  <View>
-                    <View style={styles.div}/>
-                  </View>            
-                  :
-                  null
-              }
-          </TouchableOpacity>
-
-        )
-        }
-      )}
-      </ScrollView>
-
+      <FlatList
+       data={this.props.contactos
+            .filter((contacto) => this.filtrarLetras(this.props.filtrar.length, contacto))
+            .sort((a,b) => {
+            if(a.name > b.name) return 1
+            else return -1
+			})} 
+      renderItem={this.renderRow}
+      keyExtractor={(item) => item.id}
+      />
     )
   };
 };
